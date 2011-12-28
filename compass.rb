@@ -1,0 +1,8 @@
+http_path = "/"
+css_dir = "output/css"
+sass_dir = "content/stylesheets"
+images_dir = "output/images"
+javascripts_dir = "output/js"
+http_stylesheets_dir = "css"
+http_javascripts_dir = "js"
+http_images_dir = "images"

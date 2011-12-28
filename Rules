@@ -1,0 +1,65 @@
+#!/usr/bin/env ruby
+
+# A few helpful tips about the Rules file:
+#
+# * The string given to #compile and #route are matching patterns for
+#   identifiers--not for paths. Therefore, you can't match on extension.
+#
+# * The order of rules is important: for each item, only the first matching
+#   rule is applied.
+#
+# * Item identifiers start and end with a slash (e.g. "/about/" for the file
+#   "content/about.html"). To select all children, grandchildren, ... of an
+#   item, use the pattern "/about/*/"; "/about/*" will also select the parent,
+#   because "*" matches zero or more characters.
+require 'compass'
+require 'coffee_script'
+Compass.add_project_configuration('compass.rb')
+
+compile %r{^/stylesheets/[^/]+/$} do
+  case item[:extension]
+  when 'sass'
+    filter :sass, Compass.sass_engine_options.merge(:syntax => :sass)
+  when 'scss'
+    filter :sass, Compass.sass_engine_options.merge(:syntax => :scss)
+  end
+end
+
+compile "/js/*/" do
+  if item[:extension] == 'coffee'
+    filter :coffee
+  end
+end
+
+compile '*' do
+  if item.binary?
+    # don't filter binary items
+  elsif item[:extension].split('.').last == 'haml'
+    filter :haml
+    filter :erb
+    layout 'default'
+  end
+end
+
+route %r{^/stylesheets/[^/]+/$} do
+  (item.identifier.chop + ".css").sub('stylesheets', 'css')
+end
+
+route "/stylesheets/*" do
+  # Only write out stylesheets in the top-level directory
+end
+
+route "/js/*" do
+  item.identifier.chop + ".js"
+end
+
+route '*' do
+  if item.binary?
+    # Write item with identifier /foo/ to /foo.ext
+    item.identifier.chop + '.' + item[:extension]
+  elsif item[:extension].split('.').first == 'html'
+    item.identifier.chop + '/index.html'
+  end
+end
+
+layout '*', :haml, :format => :html5
