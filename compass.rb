@@ -6,3 +6,5 @@ javascripts_dir = "output/js"
 http_stylesheets_dir = "css"
 http_javascripts_dir = "js"
 http_images_dir = "images"
+output_style = :compact
+line_comments = false

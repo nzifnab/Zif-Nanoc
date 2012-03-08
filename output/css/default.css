@@ -1,98 +1,29 @@
-/* line 1, content/stylesheets/default.scss */
-* {
-  margin: 0;
-  padding: 0;
-  font-family: Georgia, Palatino, Times, 'Times New Roman', sans-serif;
-}
+* { margin: 0; padding: 0; font-family: Georgia, Palatino, Times, 'Times New Roman', sans-serif; }
 
-/* line 8, content/stylesheets/default.scss */
-body {
-  background: #fff;
-}
+body { background: #fff; }
 
-/* line 12, content/stylesheets/default.scss */
-a {
-  text-decoration: none;
-}
+a { text-decoration: none; }
 
-/* line 17, content/stylesheets/default.scss */
-a:link,
-a:visited {
-  color: #f30;
-}
+a:link, a:visited { color: #f30; }
 
-/* line 21, content/stylesheets/default.scss */
-a:hover {
-  color: #f90;
-}
+a:hover { color: #f90; }
 
-/* line 25, content/stylesheets/default.scss */
-#main {
-  position: absolute;
-  top: 40px;
-  left: 280px;
-  width: 500px;
-}
+#main { position: absolute; top: 40px; left: 280px; width: 500px; }
 
-/* line 34, content/stylesheets/default.scss */
-#main h1 {
-  font-size: 40px;
-  font-weight: normal;
-  line-height: 40px;
-  letter-spacing: -1px;
-}
+#main h1 { font-size: 40px; font-weight: normal; line-height: 40px; letter-spacing: -1px; }
 
-/* line 43, content/stylesheets/default.scss */
-#main p {
-  margin: 20px 0;
-  font-size: 15px;
-  line-height: 20px;
-}
+#main p { margin: 20px 0; font-size: 15px; line-height: 20px; }
 
-/* line 51, content/stylesheets/default.scss */
-#main ul, #main ol {
-  margin: 20px;
-}
+#main ul, #main ol { margin: 20px; }
 
-/* line 55, content/stylesheets/default.scss */
-#main li {
-  font-size: 15px;
-  line-height: 20px;
-}
+#main li { font-size: 15px; line-height: 20px; }
 
-/* line 61, content/stylesheets/default.scss */
-#main ul li {
-  list-style-type: square;
-}
+#main ul li { list-style-type: square; }
 
-/* line 65, content/stylesheets/default.scss */
-#sidebar {
-  position: absolute;
-  top: 40px;
-  left: 20px;
-  width: 200px;
-  padding: 20px 20px 0 0;
-  border-right: 1px solid #ccc;
-  text-align: right;
-}
+#sidebar { position: absolute; top: 40px; left: 20px; width: 200px; padding: 20px 20px 0 0; border-right: 1px solid #ccc; text-align: right; }
 
-/* line 79, content/stylesheets/default.scss */
-#sidebar h2 {
-  text-transform: uppercase;
-  font-size: 13px;
-  color: #333;
-  letter-spacing: 1px;
-  line-height: 20px;
-}
+#sidebar h2 { text-transform: uppercase; font-size: 13px; color: #333; letter-spacing: 1px; line-height: 20px; }
 
-/* line 91, content/stylesheets/default.scss */
-#sidebar ul {
-  list-style-type: none;
-  margin: 20px 0;
-}
+#sidebar ul { list-style-type: none; margin: 20px 0; }
 
-/* line 97, content/stylesheets/default.scss */
-#sidebar li {
-  font-size: 14px;
-  line-height: 20px;
-}
+#sidebar li { font-size: 14px; line-height: 20px; }

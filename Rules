@@ -16,57 +16,77 @@ require 'compass'
 require 'coffee_script'
 Compass.add_project_configuration('compass.rb')
 
-compile %r{^/stylesheets/[^/]+/$} do
-  case item[:extension]
-  when 'sass'
-    filter :sass, Compass.sass_engine_options.merge(:syntax => :sass)
-  when 'scss'
-    filter :sass, Compass.sass_engine_options.merge(:syntax => :scss)
-  end
-end
-
-compile "/js/*/" do
-  if item[:extension] == 'coffee'
-    filter :coffee
-  end
-end
-
 I18n.available_locales.each do |locale|
-  compile '*', :rep => :"locale_#{locale}" do
-    if item.binary?
-      # don't filter binary items
-    elsif item[:extension].split('.').last == 'haml'
+  compile "*", :rep => :"locale_#{locale}" do
+    extensions = item[:extension].split('.').reverse
+
+    if item.binary? || extensions.size == 1
+      # don't filter binary items or ones with only a single extension
+
+    else
       I18n.locale = locale
-      filter :haml
-      filter :erb
-      layout 'default'
+
+
+      extensions.each do |extension|
+        case extension
+        when 'coffee'
+          filter :coffee
+        when 'erb'
+          filter :erb
+        when 'sass'
+          filter :sass, Compass.sass_engine_options.merge(:syntax => :sass)
+        when 'scss'
+          filter :sass, Compass.sass_engine_options.merge(:syntax => :scss)
+        when 'haml'
+          filter :haml, {:escape_attrs => false}
+          filter :erb
+          layout 'default'
+        when 'layout'
+          layout 'default'
+        end
+      end
     end
   end
 end
 
-route %r{^/stylesheets/[^/]+/$} do
-  (item.identifier.chop + ".css").sub('stylesheets', 'css')
-end
-
-route "/stylesheets/*" do
-  # Only write out stylesheets in the top-level directory
-end
-
-route "/js/*" do
-  item.identifier.chop + ".js"
-end
-
 I18n.available_locales.each do |locale|
   route '*', :rep => :"locale_#{locale}" do
+    I18n.locale = locale
+    skip_locale_path = false
+
     if item.binary?
-      # Write item with identifier /foo/ to /foo.ext
+      # Write item with /foo/ to /foo.ext
       item.identifier.chop + '.' + item[:extension]
-    elsif item[:extension].split('.').first == 'html'
-      path = ""
-      unless I18n.default_locale == locale
-        path = "/#{locale}"
+    elsif item.identifier.chop.split('/').last !~ /^_/
+      extensions = item[:extension].split('.').reverse
+      path = item.identifier.chop
+      extensions.each do |extension|
+        case extension
+        when 'nolocale'
+          skip_locale_path = true
+        when 'locale'
+          path << "-#{locale}"
+        when 'html', 'php'
+          path = "/#{locale}#{path}" if I18n.default_locale != locale && !skip_locale_path
+          path = "#{path}/index"
+          break
+        when 'css'
+          path.sub!('stylesheets', 'css')
+        end
       end
-      path + item.identifier.chop + '/index.html'
+
+      unless skip_locale_path
+        path = path.split('/').map do |path_element|
+          txt = I18n.translate("page_#{path_element.gsub('-', '_')}")
+          if txt =~ /translation missing/ || path_element == 'index'
+            path_element
+          else
+            txt
+          end
+        end.join('/')
+      end
+
+      "#{path}.#{extensions.last}"
     end
   end
 end

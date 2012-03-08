@@ -12,8 +12,12 @@ I18n.backend.class.send(:include, I18n::Backend::Fallbacks)
 end
 
 module I18nHelper
+  # Gives a warning if the specified translation string doesn't exist.  Drop the .tap{} block
+  # if you don't want this warning.
   def translate(*args)
-    I18n.translate(*args)
+    I18n.translate(*args).tap do |translation|
+      puts "WARNING:  #{translation}" if translation =~ /translation missing/
+    end
   end
 
   alias_method :t, :translate
