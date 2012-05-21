@@ -1,11 +1,14 @@
 # All files in the 'lib' directory will be loaded
 # before nanoc starts compiling.
+include Nanoc3::Helpers::LinkTo
+include Nanoc3::Helpers::Rendering
 
 module Nanoc3::Helpers::LinkTo
   # Gives the ability to use link_to block syntax like rails allows:
   #    = link_to "/something/", :class => 'mylink' do
   #      %img{:src => '/images/someimage'}
   #      A link!
+  alias_method :old_link_to, :link_to
   def link_to(text, path={}, options={}, &block)
     if block_given?
       options = path
